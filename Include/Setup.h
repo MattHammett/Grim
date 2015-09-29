@@ -1,0 +1,29 @@
+#ifndef SETUP_H
+#define SETUP_H
+
+// Build Mode
+#ifdef _DEBUG
+#define GRIM_DEBUG
+#else
+#define GRIM_RELEASE
+#endif
+
+// Platform
+#define GRIM_PLATFORM_UNKNOWN	0x00000000
+#define GRIM_PLATFORM_WINDOWS	0x00010000
+#define GRIM_PLATFORM_LINUX		0x00020000
+#define GRIM_PLATFORM_APPLE		0x00040000
+
+#ifdef GRIM_FORCE_PLATFORM_UNKNOWN
+#define GRIM_PLATFORM GRIM_PLATFORM_UNKNOWN
+#elif defined(__APPLE__)
+#define GRIM_PLATFORM GRIM_PLATFORM_APPLE
+#elif defined(_WIN32)
+#define GRIM_PLATFORM GRIM_PLATFORM_WINDOWS
+#elif defined(__linux)
+#define GRIM_PLATFORM GRIM_PLATFORM_LINUX
+#else
+#define GRIM_PLATFORM GRIM_PLATFORM_UNKNOWN
+#endif
+
+#endif
