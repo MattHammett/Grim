@@ -1,4 +1,7 @@
+#include "../Include/Engine.h"
+
 int main()
 {
-	return 0;
+	Grim::Engine grim;
+	return grim.run();
 }

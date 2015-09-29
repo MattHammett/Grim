@@ -26,4 +26,8 @@
 #define GRIM_PLATFORM GRIM_PLATFORM_UNKNOWN
 #endif
 
+// Exit
+#define GRIM_EXIT_SUCCESS 0
+#define GRIM_EXIT_FAILURE 1
+
 #endif
