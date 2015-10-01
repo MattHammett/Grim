@@ -31,9 +31,11 @@ void Log::print(Log::Level level, const std::string& output)
 		return;
 	}
 #endif
+
 	assert(level >= 0);
 	assert(level <= Log::Verbose);
 	assert(m_File.is_open());
+
 	if (m_File.is_open())
 	{
 		const std::string time(formatTime());
