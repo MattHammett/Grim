@@ -1,5 +1,7 @@
 #include "../../Include/Resource/Strings.h"
 #include "../../Include/Utility/File.h"
+#include "../../Include/Debug/Error.h"
+#include "../../Include/Utility/Singletons.h"
 #include <sstream>
 #include <iostream>
 using namespace Grim;
@@ -42,7 +44,6 @@ void Strings::initializeAllStrings()
 	{
 		if (stringNode->value() != nullptr)
 		{
-			std::cout << stringNode->first_attribute("data")->value() << std::endl;
 			m_Strings.emplace(stringNode->first_attribute("name")->value(), stringNode->first_attribute("data")->value());
 		}
 	}

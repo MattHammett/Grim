@@ -1,7 +1,11 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
+#define WIN32_LEAN_AND_MEAN
+
 #include "..\Singleton.h"
+#include "..\Type.h"
+#include <Windows.h>
 
 namespace Grim
 {
@@ -11,10 +15,14 @@ namespace Grim
 	{
 		GRIM_SINGLETON
 	public:
-		int test();
+		float32 getElapsedTimeSeconds();
 	protected:
 		void initialize() override;
 		void terminate() override;
+	private:
+		LARGE_INTEGER m_LargeInt;
+		float32 m_Frequency;
+		uint64 m_CounterStart;
 	};
 }
 

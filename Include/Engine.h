@@ -11,12 +11,26 @@ namespace Grim
 	public:
 		explicit Engine();
 		~Engine();
-		int32 run();
+		void run();
 		void exit();
 
+		void setExitCode(int32 exitCode);
+		int32 getExitCode() const;
 	private:
-		bool m_Running;
 		sf::RenderWindow m_RenderWindow;
+		bool m_Running;
+		int32 m_ExitCode;
+
+		// Fixed time step
+		float32 m_t;
+		float32 m_dt;
+		float32 m_CurrentTime;
+		float32 m_Accumulator;
+		float32 m_StatePrevious;
+		float32 m_StateCurrent;
+		float32 m_NewTime;
+		float32 m_FrameTime;
+		float32 m_FrameAlpha;
 	};
 }
 

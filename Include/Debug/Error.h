@@ -3,14 +3,19 @@
 
 namespace Grim
 {
+	class Engine;
+
 	class Error
 	{
 	public:
-		enum Code
+		enum Type
 		{
-			FAILURE,
-			SUCCESS
+			Fatal,
+			Divide_By_Zero,
+			Out_Of_Range,
 		};
+
+		static void handleError(Error::Type error, Engine& engine);
 	};
 }
 

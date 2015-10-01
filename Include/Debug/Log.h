@@ -5,6 +5,7 @@
 #include <chrono>
 #include <ctime>
 #include "..\Utility\Singleton.h"
+#include "../Utility/Type.h"
 
 namespace Grim
 {
@@ -25,11 +26,18 @@ namespace Grim
 		};
 	public:
 		void setDefaultLevel(Log::Level level);
+
+		void print(const std::string& output);
+		void print(Log::Level level, const std::string& output);
 	protected:
 		void initialize() override;
 		void terminate() override;
 	private:
+		void openLogFile();
+		void appendLogHeader();
 		void flush();
+		const std::string formatDate();
+		const std::string formatTime();
 	private:
 		std::fstream m_File;
 		Log::Level m_DefaultLevel;

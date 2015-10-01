@@ -3,5 +3,5 @@
 int main()
 {
 	Grim::Engine grim;
-	return grim.run();
+	return grim.getExitCode();
 }

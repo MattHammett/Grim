@@ -6,6 +6,12 @@
 
 namespace Grim
 {
+	class File
+	{
+	public:
+		static bool checkFileEmpty(std::fstream& file);
+		static bool checkFileExists(const std::string& file);
+	};
 }
 
 #endif
