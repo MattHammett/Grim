@@ -9,9 +9,9 @@ using namespace Grim;
 
 Engine::Engine()
 {
-	tryInitializeSingletons();
-	tryInitializeWindow();
-	tryRunGameLoop();
+	if (!tryInitializeSingletons()) return;
+	if (!tryInitializeWindow()) return;
+	if (!tryRunGameLoop()) return;
 }
 
 Engine::~Engine()

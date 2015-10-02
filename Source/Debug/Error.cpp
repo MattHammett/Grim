@@ -43,6 +43,7 @@ void Error::handle(Error::Type error, Engine& engine)
 
 void Error::handleXMLParse()
 {
+	// Have to use console output since the error is within the strings singleton
 	std::cout << "Error: XML parse error. File corrupt or syntax error!" << std::endl;
 	std::cin.sync();
 	std::cin.ignore();
