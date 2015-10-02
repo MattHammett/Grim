@@ -12,10 +12,14 @@ void Singletons::initialize()
 	strings.initialize();
 	log.initialize();
 	clock.initialize();
+
+	log.print(Singletons::strings.find("ENGINE_SINGLETONS_INITIALIZATION_SUCCESS"));
 }
 
 void Singletons::terminate()
 {
+	log.print(Singletons::strings.find("ENGINE_SINGLETONS_TERMINATING"));
+
 	strings.terminate();
 	clock.terminate();
 	log.terminate();

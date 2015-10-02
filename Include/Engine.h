@@ -17,6 +17,10 @@ namespace Grim
 		void setExitCode(int32 exitCode);
 		int32 getExitCode() const;
 	private:
+		bool tryInitializeSingletons();
+		bool tryInitializeWindow();
+		bool tryRunGameLoop();
+	private:
 		sf::RenderWindow m_RenderWindow;
 		bool m_Running;
 		int32 m_ExitCode;

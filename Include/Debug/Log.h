@@ -22,6 +22,7 @@ namespace Grim
 			Error,
 			Warning,
 			Info,
+			sf,
 			Verbose
 		};
 	public:
@@ -41,8 +42,8 @@ namespace Grim
 	private:
 		std::fstream m_File;
 		Log::Level m_DefaultLevel;
-		bool m_ToCout;
 		bool m_ToFile;
+		bool m_ToConsole;
 		std::size_t m_MaxLogFileSize;
 		std::size_t m_LogFlushThreshold; // Number of log entries to hold until we flush
 

@@ -10,6 +10,8 @@ using namespace Grim;
 void Log::initialize()
 {
 	m_DefaultLevel = Log::Level::Info;
+	m_ToFile = true;
+	m_ToConsole = true;
 
 	m_TimeDate = std::chrono::system_clock::now();
 	m_TimeDate_t = std::chrono::system_clock::to_time_t(m_TimeDate);
@@ -25,13 +27,16 @@ void Log::print(const std::string & output)
 
 void Log::print(Log::Level level, const std::string& output)
 {
+	if (!m_ToFile && !m_ToConsole)
+	{
+		return;
+	}
 #ifndef GRIM_DEBUG
 	if (level == Log::Level::Debug)
 	{
 		return;
 	}
 #endif
-
 	assert(level >= 0);
 	assert(level <= Log::Verbose);
 	assert(m_File.is_open());
@@ -43,28 +48,82 @@ void Log::print(Log::Level level, const std::string& output)
 		switch (level)
 		{
 		case Grim::Log::Debug:
-			m_File << '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG")	<< ": " << output << '\n';
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG") << ": "	<< output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG") << ": "	<< output << '\n';
+			}
 			break;
 		case Grim::Log::Fatal:
-			m_File << '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL")	<< ": " << output << '\n';
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL") << ": "	<< output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL") << ": "	<< output << '\n';
+			}
 			break;
 		case Grim::Log::Error:
-			m_File << '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR")	<< ": " << output << '\n';
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR") << ": "	<< output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR") << ": "	<< output << '\n';
+			}
 			break;
 		case Grim::Log::Warning:
-			m_File << '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_WARNING")	<< ": " << output << '\n';
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_WARNING") << ": " << output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_WARNING") << ": " << output << '\n';
+			}
 			break;
 		case Grim::Log::Info:
-			m_File << '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO")		<< ": " << output << '\n';
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO") << ": "	<< output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO") << ": "	<< output << '\n';
+			}
+			break;
+		case Grim::Log::sf:
+			if (output.size() == 0) break;
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_SFML")			<< output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_SFML")			<< output << '\n';
+			}
 			break;
 		case Grim::Log::Verbose:
-			m_File << '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE")	<< ": " << output << '\n';
+			if (m_ToFile)
+			{
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE") << ": " << output << '\n';
+			}
+			if (m_ToConsole)
+			{
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE") << ": " << output << '\n';
+			}
 			break;
 		default:
 			print(Log::Error, Singletons::strings.find("LOG_ERROR_INVALID_LEVEL"));
 			break;
 		}
 	}
+	Log::flush();
 }
 
 void Log::terminate()
@@ -92,6 +151,7 @@ void Log::openLogFile()
 		}
 	}
 	assert(!m_File.is_open());
+
 	m_File.open(Singletons::strings.find("LOG_FILE_PATH") + std::to_string(i) + ".txt", std::ios::out | std::ios::in | std::ios::app);
 
 	if (m_File.is_open())
@@ -105,7 +165,18 @@ void Log::appendLogHeader()
 {
 	assert(m_File.is_open());
 
-	m_File << Singletons::strings.find("ENGINE_WINDOW_TITLE") << " " << Singletons::strings.find("ENGINE_VERSION_NUMBER") << "\n\n";
+	if (m_ToFile)
+	{
+		m_File		<< Singletons::strings.find("ENGINE_WINDOW_TITLE") << " " << Singletons::strings.find("ENGINE_VERSION_NUMBER") << "\n\n";
+	}
+	if (m_ToConsole)
+	{
+		std::cout	<< Singletons::strings.find("ENGINE_WINDOW_TITLE") << " " << Singletons::strings.find("ENGINE_VERSION_NUMBER") << "\n\n";
+	}
+	if (m_ToConsole && !m_ToFile)
+	{
+		m_File		<< Singletons::strings.find("LOG_TO_FILE_SET");
+	}
 }
 
 void Log::flush()
