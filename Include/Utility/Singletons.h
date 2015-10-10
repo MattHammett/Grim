@@ -5,6 +5,7 @@
 #include "../Utility/Time/Clock.h"
 #include "../Resource/Strings.h"
 #include "../Lua/Lua.h"
+#include "../Input/Input.h"
 
 namespace Grim
 {
@@ -14,6 +15,7 @@ namespace Grim
 		friend class Clock;
 		friend class Strings;
 		friend class Lua;
+		friend class Input;
 	public:
 		static void initialize();
 		static void terminate();
@@ -22,6 +24,7 @@ namespace Grim
 		static Clock& clock;
 		static Strings& strings;
 		static Lua& lua;
+		static Input& input;
 	private:
 		explicit Singletons();
 	};

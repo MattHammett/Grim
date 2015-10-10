@@ -51,6 +51,8 @@ void Engine::run()
 				Singletons::lua.testFunction();
 			}
 		}
+		Singletons::input.resetStates();
+		Singletons::input.checkStates();
 
 		while (m_Accumulator >= m_dt)
 		{
@@ -59,8 +61,6 @@ void Engine::run()
 			m_t += m_dt;
 			m_Accumulator -= m_dt;
 		}
-
-		//std::cout << Singletons::clock.getElapsedTimeSeconds() << std::endl;
 
 		m_FrameAlpha = m_Accumulator / m_dt;
 		float32 stateRender = m_StateCurrent * m_FrameAlpha + m_StatePrevious * (1.0f - m_FrameAlpha);
@@ -143,6 +143,8 @@ bool Engine::tryRunGameLoop()
 void Engine::integrate(float32 stateCurrent, float32 dt)
 {
 	m_Player.update(m_RenderWindow, dt);
+
+	std::cout << Singletons::input.isKeyDown(Keyboard::Escape) << std::endl;
 }
 
 void Engine::render(float32 stateRender)
