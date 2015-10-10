@@ -3,12 +3,14 @@
 #include "../Include/Utility/Singletons.h"
 #include "../Include/Utility/Math/Constants.h"
 #include "../Include/Debug/Error.h"
+
 #include <SFML\Window\Event.hpp>
 #include <iostream>
 using namespace Grim;
 
 Engine::Engine()
 {
+	Error::changeSFMLrdbuff();
 	if (!tryInitializeSingletons()) return;
 	if (!tryInitializeWindow()) return;
 	if (!tryRunGameLoop()) return;
@@ -22,7 +24,7 @@ void Engine::run()
 {
 	m_t = 0.0f;
 	m_dt = GRIM_DELTA_TIME;
-
+	
 	m_CurrentTime = Singletons::clock.getElapsedTimeSeconds();
 	m_Accumulator = 0.0f;
 
@@ -42,24 +44,28 @@ void Engine::run()
 		{
 			if (events.type == events.Closed)
 			{
-				Engine::exit();
+				exit();
+			}
+			if (events.type == events.KeyPressed && events.key.code == sf::Keyboard::Space)
+			{
+				Singletons::lua.testFunction();
 			}
 		}
 
 		while (m_Accumulator >= m_dt)
 		{
 			m_StatePrevious = m_StateCurrent;
-			//intergrate(currentState, t, dt);
+			integrate(m_StateCurrent, m_dt);
 			m_t += m_dt;
 			m_Accumulator -= m_dt;
 		}
 
-		m_FrameAlpha = m_Accumulator / m_dt;
-		float32 renderState = m_StateCurrent * m_FrameAlpha + m_StatePrevious * (1.0f - m_FrameAlpha);
+		//std::cout << Singletons::clock.getElapsedTimeSeconds() << std::endl;
 
-		//Render(renderState);
-		m_RenderWindow.clear(sf::Color::Black);
-		m_RenderWindow.display();
+		m_FrameAlpha = m_Accumulator / m_dt;
+		float32 stateRender = m_StateCurrent * m_FrameAlpha + m_StatePrevious * (1.0f - m_FrameAlpha);
+
+		render(stateRender);
 	}
 	m_ExitCode = GRIM_EXIT_SUCCESS;
 }
@@ -67,7 +73,7 @@ void Engine::run()
 void Engine::exit()
 {
 	m_Running = false;
-	m_RenderWindow.close();
+	m_RenderWindow.close(); 
 }
 
 void Engine::setExitCode(int32 exitCode)
@@ -103,16 +109,15 @@ bool Engine::tryInitializeSingletons()
 bool Engine::tryInitializeWindow()
 {
 	sf::ContextSettings contextSettings;
-	contextSettings.depthBits = 32;
+	contextSettings.depthBits = 24;
 	contextSettings.stencilBits = 8;
 	contextSettings.antialiasingLevel = 4;
-	contextSettings.majorVersion = 3;
-	contextSettings.minorVersion = 0;
-	uint32 style = sf::Style::Close;
+	contextSettings.majorVersion = 4;
+	contextSettings.minorVersion = 5;
 
-	Error::changeSFMLrdbuff();
-	m_RenderWindow.create(sf::VideoMode(1280, 720, 32), Singletons::strings.find("ENGINE_WINDOW_TITLE"), style, contextSettings);
+	m_RenderWindow.create(sf::VideoMode(1280, 720, 32), Singletons::strings.find("ENGINE_WINDOW_TITLE"), sf::Style::Close, contextSettings);
 	Singletons::log.print(Log::Level::sf, Error::convertSFML());
+	//m_RenderWindow.setVerticalSyncEnabled(1);
 
 	return true;
 }
@@ -132,6 +137,17 @@ bool Engine::tryRunGameLoop()
 	}
 	Singletons::log.print(Singletons::strings.find("ENGINE_SHUTTING_DOWN"));
 	Singletons::terminate();
-
 	return true;
+}
+
+void Engine::integrate(float32 stateCurrent, float32 dt)
+{
+	m_Player.update(m_RenderWindow, dt);
+}
+
+void Engine::render(float32 stateRender)
+{
+	m_RenderWindow.clear(sf::Color::Black);
+	m_RenderWindow.draw(m_Player);
+	m_RenderWindow.display();
 }

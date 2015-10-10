@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include "Conversions.h"
+
 //PI
 #define GRIM_PI				3.14159265358979323846f
 #define GRIM_2PI			6.28318530717958647692f

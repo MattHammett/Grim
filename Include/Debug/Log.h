@@ -23,6 +23,7 @@ namespace Grim
 			Warning,
 			Info,
 			sf,
+			Lua,
 			Verbose
 		};
 	public:
@@ -51,6 +52,8 @@ namespace Grim
 		std::chrono::time_point<std::chrono::system_clock> m_TimeDate;
 		std::time_t m_TimeDate_t;
 		std::tm m_LocalTimeDate;
+
+		float32 m_LastTime;
 	};
 }
 

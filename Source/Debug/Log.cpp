@@ -12,12 +12,14 @@ void Log::initialize()
 	m_DefaultLevel = Log::Level::Info;
 	m_ToFile = true;
 	m_ToConsole = true;
+	m_LastTime = 0.0f;
 
 	m_TimeDate = std::chrono::system_clock::now();
 	m_TimeDate_t = std::chrono::system_clock::to_time_t(m_TimeDate);
 	localtime_s(&m_LocalTimeDate, &m_TimeDate_t);
 
 	openLogFile();
+	print(Level::Info, Singletons::strings.find("ENGINE_INITIALIZING"));
 }
 
 void Log::print(const std::string & output)
@@ -50,72 +52,82 @@ void Log::print(Log::Level level, const std::string& output)
 		case Grim::Log::Debug:
 			if (m_ToFile)
 			{
-				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG") << ": "	<< output << '\n';
-			}
-			if (m_ToConsole)
-			{
-				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG") << ": "	<< output << '\n';
-			}
-			break;
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG")	<< ": "	<< output << '\n';
+			}								    
+			if (m_ToConsole)				    
+			{								    
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_DEBUG")	<< ": "	<< output << '\n';
+			}								    
+			break;							    
 		case Grim::Log::Fatal:
-			if (m_ToFile)
-			{
-				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL") << ": "	<< output << '\n';
-			}
-			if (m_ToConsole)
-			{
-				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL") << ": "	<< output << '\n';
-			}
-			break;
+			if (m_ToFile)					    
+			{								    
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL")	<< ": "	<< output << '\n';
+			}								    
+			if (m_ToConsole)				    
+			{								    
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_FATAL")	<< ": "	<< output << '\n';
+			}								    
+			break;							    
 		case Grim::Log::Error:
-			if (m_ToFile)
-			{
-				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR") << ": "	<< output << '\n';
-			}
-			if (m_ToConsole)
-			{
-				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR") << ": "	<< output << '\n';
-			}
-			break;
+			if (m_ToFile)					    
+			{								    
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR")	<< ": "	<< output << '\n';
+			}								    
+			if (m_ToConsole)				    
+			{								    
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_ERROR")	<< ": "	<< output << '\n';
+			}								    
+			break;							    
 		case Grim::Log::Warning:
-			if (m_ToFile)
-			{
+			if (m_ToFile)					    
+			{								    
 				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_WARNING") << ": " << output << '\n';
-			}
-			if (m_ToConsole)
-			{
+			}								    
+			if (m_ToConsole)				    
+			{								    
 				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_WARNING") << ": " << output << '\n';
-			}
-			break;
+			}								    
+			break;							    
 		case Grim::Log::Info:
-			if (m_ToFile)
-			{
-				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO") << ": "	<< output << '\n';
-			}
-			if (m_ToConsole)
-			{
-				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO") << ": "	<< output << '\n';
-			}
-			break;
+			if (m_ToFile)					    
+			{								    
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO")	<< ": "	<< output << '\n';
+			}								    
+			if (m_ToConsole)				    
+			{								    
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_INFO")	<< ": "	<< output << '\n';
+			}								    
+			break;							    
 		case Grim::Log::sf:
-			if (output.size() == 0) break;
+			if (output.size() == 0) break;	    
+			if (m_ToFile)					    
+			{								    
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_SFML")			<< output << '\n';
+			}								    
+			if (m_ToConsole)				    
+			{								    
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_SFML")			<< output << '\n';
+			}								    
+			break;
+		case Grim::Log::Lua:
 			if (m_ToFile)
 			{
-				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_SFML")			<< output << '\n';
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_LUA")		<< ": " << output << '\n';
 			}
 			if (m_ToConsole)
 			{
-				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_SFML")			<< output << '\n';
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_LUA")		<< ": " << output << '\n';
 			}
 			break;
-		case Grim::Log::Verbose:
-			if (m_ToFile)
-			{
-				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE") << ": " << output << '\n';
-			}
-			if (m_ToConsole)
-			{
-				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE") << ": " << output << '\n';
+		case Grim::Log::Verbose:	
+			if (m_ToFile)					    
+			{								    
+				m_File		<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE")	<< ": " << output << '\n';
+			}								    
+			if (m_ToConsole)				    
+			{								    
+				std::cout	<< '[' + time + ']' << " " << Singletons::strings.find("LOG_LEVEL_VERBOSE")	<< ": " << output << '\n';
 			}
 			break;
 		default:

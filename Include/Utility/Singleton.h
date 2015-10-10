@@ -16,11 +16,15 @@ namespace Grim
 			static T m_Instance;
 			return m_Instance;
 		}
+
+		bool checkForError() const { return m_Errored; };
 	protected:
 		explicit Singleton<T>() {};
 
 		virtual void initialize() = 0;
 		virtual void terminate() = 0;
+
+		bool m_Errored = false;
 	};
 }
 

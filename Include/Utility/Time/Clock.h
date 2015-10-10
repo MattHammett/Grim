@@ -21,7 +21,7 @@ namespace Grim
 		void terminate() override;
 	private:
 		LARGE_INTEGER m_LargeInt;
-		float32 m_Frequency;
+		float64 m_Frequency;
 		uint64 m_CounterStart;
 	};
 }

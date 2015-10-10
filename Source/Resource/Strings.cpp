@@ -26,6 +26,12 @@ const std::string& Strings::find(const std::string & name)
 	{
 		return m_Strings[name];
 	}
+	else
+	{
+		m_Errored = true;
+		Singletons::log.print(Singletons::strings.find("STRINGS_FIND_ERROR"));
+		return Singletons::strings.find("STRINGS_DEFAULT_STRING");
+	}
 }
 
 void Strings::initializeAllStrings()
@@ -47,4 +53,5 @@ void Strings::initializeAllStrings()
 			m_Strings.emplace(stringNode->first_attribute("name")->value(), stringNode->first_attribute("data")->value());
 		}
 	}
+	m_Document.clear();
 }
