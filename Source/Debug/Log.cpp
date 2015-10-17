@@ -13,6 +13,7 @@ void Log::initialize()
 	m_ToFile = true;
 	m_ToConsole = true;
 	m_LastTime = 0.0f;
+	m_PrintVerbose = true;
 
 	m_TimeDate = std::chrono::system_clock::now();
 	m_TimeDate_t = std::chrono::system_clock::to_time_t(m_TimeDate);
@@ -22,6 +23,7 @@ void Log::initialize()
 	print(Level::Info, Singletons::resources.findString("ENGINE_INITIALIZING"));
 
 	flushPrintPreInitializeQueue();
+	print(Level::Verbose, Singletons::resources.findString("LOG_INITIALIZED"));
 }
 
 void Log::print(const std::string & output)
@@ -122,7 +124,11 @@ void Log::print(Log::Level level, const std::string& output)
 				std::cout	<< '[' + time + ']' << " " << Singletons::resources.findString("LOG_LEVEL_LUA")		<< ": " << output << '\n';
 			}
 			break;
-		case Grim::Log::Verbose:	
+		case Grim::Log::Verbose:
+			if (!m_PrintVerbose)
+			{
+				break;
+			}
 			if (m_ToFile)					    
 			{								    
 				m_File		<< '[' + time + ']' << " " << Singletons::resources.findString("LOG_LEVEL_VERBOSE")	<< ": " << output << '\n';
@@ -143,6 +149,7 @@ void Log::print(Log::Level level, const std::string& output)
 void Log::terminate()
 {
 	assert(m_File.is_open());
+	print(Level::Verbose, "Log singleton terminated!");
 	if (m_File.is_open())
 	{
 		m_File.close();
@@ -258,7 +265,7 @@ void Log::flushPrintPreInitializeQueue()
 	std::size_t size(m_PreInitializeQueueLevel.size());
 	for (std::size_t i = 0; i < size; ++i)
 	{
-		print(m_PreInitializeQueueLevel.front(), m_PreInitializeQueueString.front());
+		print(m_PreInitializeQueueLevel.front(), Singletons::resources.findString(m_PreInitializeQueueString.front()));
 		m_PreInitializeQueueLevel.pop();
 		m_PreInitializeQueueString.pop();
 	}

@@ -6,6 +6,7 @@
 #include "../Lua/Lua.h"
 #include "../Input/Input.h"
 #include "../Resource/Resources.h"
+#include "../Game/GUI/DesktopManager.h"
 
 namespace Grim
 {
@@ -16,6 +17,7 @@ namespace Grim
 		friend class Lua;
 		friend class Input;
 		friend class Resources;
+		friend class DesktopManager;
 	public:
 		static void initialize();
 		static void terminate();
@@ -25,6 +27,7 @@ namespace Grim
 		static Lua& lua;
 		static Input& input;
 		static Resources& resources;
+		static DesktopManager& gui;
 	private:
 		explicit Singletons();
 	};

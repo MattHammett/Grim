@@ -51,6 +51,7 @@ namespace Grim
 		bool m_ToConsole;
 		std::size_t m_MaxLogFileSize;
 		std::size_t m_LogFlushThreshold; // Number of log entries to hold until we flush
+		bool m_PrintVerbose;
 
 		//Time
 		std::chrono::time_point<std::chrono::system_clock> m_TimeDate;

@@ -16,11 +16,14 @@ void Lua::initialize()
 	luaL_openlibs(m_State);
 
 	lua_register(m_State, "test", test);
+
+	Singletons::log.print(Log::Level::Verbose, Singletons::resources.findString("LUA_INITIALIZED"));
 }
 
 void Lua::terminate()
 {
 	lua_close(m_State);
+	Singletons::log.print(Log::Level::Verbose, Singletons::resources.findString("LUA_TERMINATED"));
 }
 
 void Lua::testFunction()
