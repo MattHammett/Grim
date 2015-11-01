@@ -1,8 +1,8 @@
-#include "../Include/Engine.h"
-#include "../Include/Setup.h"
-#include "../Include/Utility/Singletons.h"
-#include "../Include/Utility/Math/Constants.h"
-#include "../Include/Debug/Error.h"
+#include "Engine.h"
+#include "Setup.h"
+#include "Utility/Singletons.h"
+#include "Utility/Math/Constants.h"
+#include "Debug/Error.h"
 #include <SFML\Graphics.hpp>
 
 #include <SFML\Window\Event.hpp>
@@ -11,7 +11,6 @@ using namespace Grim;
 
 Engine::Engine()
 {
-	Error::changeSFMLrdbuff();
 	if (!tryInitializeSingletons()) return;
 	if (!tryInitializeWindow()) return;
 	if (!tryRunGameLoop()) return;
@@ -29,10 +28,15 @@ void Engine::run()
 	m_CurrentTime = Singletons::clock.getElapsedTimeSeconds();
 	m_Accumulator = 0.0f;
 
-	m_Player = nullptr;
-	m_Player = new Player();
+	auto desk = std::make_shared<Desktop>();
+	auto cont = std::make_shared<Container>();
+	auto lab = std::make_shared<Label>();
+	cont->add(lab);
+	desk->add(cont);
 
-	while (m_Running)
+	Singletons::gui.add(desk);
+
+	while (m_bRunning)
 	{
 		m_NewTime = Singletons::clock.getElapsedTimeSeconds();
 		m_FrameTime = m_NewTime - m_CurrentTime;
@@ -54,13 +58,16 @@ void Engine::run()
 			{
 				Singletons::lua.testFunction();
 			}
+			Singletons::gui.handle(m_RenderWindow, events);
 		}
 		Singletons::input.checkStates();
 
 		while (m_Accumulator >= m_dt)
 		{
 			m_StatePrevious = m_StateCurrent;
-			integrate(m_StateCurrent, m_dt);
+
+			// Tick here
+
 			m_t += m_dt;
 			m_Accumulator -= m_dt;
 		}
@@ -75,7 +82,7 @@ void Engine::run()
 
 void Engine::exit()
 {
-	m_Running = false;
+	m_bRunning = false;
 	m_RenderWindow.close(); 
 }
 
@@ -91,6 +98,7 @@ int32 Engine::getExitCode() const
 
 bool Engine::tryInitializeSingletons()
 {
+	Error::changeSFMLrdbuff();
 	try
 	{
 		Singletons::initialize();
@@ -121,7 +129,9 @@ bool Engine::tryInitializeWindow()
 	m_RenderWindow.create(sf::VideoMode(1280, 720, 32), Singletons::resources.findString("ENGINE_WINDOW_TITLE"), sf::Style::Close, contextSettings);
 	Singletons::log.print(Log::Level::sf, Error::convertSFML());
 	//m_RenderWindow.setVerticalSyncEnabled(1);
+	Singletons::log.print(Log::Level::Verbose, Singletons::resources.findString("ENGINE_SFML_WINDOW_INITIALIZED"));
 
+	Singletons::log.print(Log::Level::Info, Singletons::resources.findString("ENGINE_INITIALIZED"));
 	return true;
 }
 
@@ -129,7 +139,7 @@ bool Engine::tryRunGameLoop()
 {
 	try
 	{
-		m_Running = true;
+		m_bRunning = true;
 		Engine::run();
 	}
 	catch (Error::Type error)
@@ -143,14 +153,9 @@ bool Engine::tryRunGameLoop()
 	return true;
 }
 
-void Engine::integrate(float32 stateCurrent, float32 dt)
-{
-	m_Player->update(m_RenderWindow, dt);
-}
-
 void Engine::render(float32 stateRender)
 {
 	m_RenderWindow.clear(sf::Color::Black);
-	m_RenderWindow.draw(*m_Player);
+	Singletons::gui.render(m_RenderWindow, sf::RenderStates());
 	m_RenderWindow.display();
 }

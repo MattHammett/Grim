@@ -1,5 +1,5 @@
-#include "../../Include/Lua/Lua.h"
-#include "../../Include/Utility/Singletons.h"
+#include "Lua.h"
+#include "../Utility/Singletons.h"
 #include <lualib.h>
 #include <lauxlib.h>
 using namespace Grim;

@@ -47,11 +47,11 @@ namespace Grim
 	private:
 		std::fstream m_File;
 		Log::Level m_DefaultLevel;
-		bool m_ToFile;
-		bool m_ToConsole;
+		bool m_bShouldPrintToFile;
+		bool m_bShouldPrintToConsole;
 		std::size_t m_MaxLogFileSize;
 		std::size_t m_LogFlushThreshold; // Number of log entries to hold until we flush
-		bool m_PrintVerbose;
+		bool m_bShouldPrintVerbose;
 
 		//Time
 		std::chrono::time_point<std::chrono::system_clock> m_TimeDate;

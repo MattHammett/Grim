@@ -1,5 +1,5 @@
-#include "../../Include/Input/Input.h"
-#include "../../Include/Utility/Singletons.h"
+#include "Input.h"
+#include "../Utility/Singletons.h"
 using namespace Grim;
 
 void Input::initialize()

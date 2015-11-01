@@ -1,7 +1,7 @@
-#include "../../Include/Debug/Error.h"
-#include "../../Include/Engine.h"
-#include "../../Include/Utility/Singletons.h"
-#include "../../Include/Setup.h"
+#include "Error.h"
+#include "../Engine.h"
+#include "../Utility/Singletons.h"
+#include "../Setup.h"
 #include <SFML\System\Err.hpp>
 #include <iostream>
 #include <sstream>
@@ -11,7 +11,7 @@ std::ostringstream Error::sfErrorStream;
 
 void Error::handle(Error::Type error, Engine& engine)
 {
-	bool abort = false;
+	bool bAbort = false;
 
 	assert(error >= 0);
 	assert(error <= Error::Out_Of_Range);
@@ -20,21 +20,21 @@ void Error::handle(Error::Type error, Engine& engine)
 	{
 	case Error::Fatal:
 		Singletons::log.print(Log::Level::Info, Singletons::resources.findString("ENGINE_ERROR_FATAL"));
-		abort = true;
+		bAbort = true;
 		engine.exit();
 		break;
 	case Error::Divide_By_Zero:
 		Singletons::log.print(Log::Level::Info, Singletons::resources.findString("ENGINE_ERROR_DIVIDE_BY_ZERO"));
-		abort = true;
+		bAbort = true;
 		engine.exit();
 		break;
 	case Error::Out_Of_Range:
 		Singletons::log.print(Log::Level::Info, Singletons::resources.findString("ENGINE_ERROR_OUT_OF_RANGE"));
-		abort = true;
+		bAbort = true;
 		engine.exit();
 		break;
 	}
-	if (abort)
+	if (bAbort)
 	{
 		Singletons::log.print(Log::Level::Info, Singletons::resources.findString("ENGINE_ABORTED"));
 		engine.setExitCode(GRIM_EXIT_FAILURE);

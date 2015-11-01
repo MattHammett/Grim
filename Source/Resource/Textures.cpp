@@ -1,6 +1,6 @@
-#include "../../Include/Resource/Textures.h"
-#include "../../Include/Utility/Singletons.h"
-#include "../../Include/Debug/Error.h"
+#include "Textures.h"
+#include "../Utility/Singletons.h"
+#include "../Debug/Error.h"
 #include <assert.h>
 #include <sstream>
 #include <iostream>

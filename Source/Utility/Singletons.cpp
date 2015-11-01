@@ -1,9 +1,9 @@
-#include "../../Include/Utility/Singletons.h"
-#include "../../Include/Debug/Log.h"
-#include "../../Include/Utility/Time/Clock.h"
-#include "../../Include/Lua/Lua.h"
-#include "../../Include/Resource/Resources.h"
-#include "../../Include/Game/GUI/DesktopManager.h"
+#include "Singletons.h"
+#include "../Debug/Log.h"
+#include "../Utility/Time/Clock.h"
+#include "../Lua/Lua.h"
+#include "../Resource/Resources.h"
+#include "../Game/GUI/DesktopManager.h"
 using namespace Grim;
 
 Log& Singletons::log = Log::instance();

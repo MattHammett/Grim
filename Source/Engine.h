@@ -2,8 +2,12 @@
 #define ENGINE_H
 
 #include "Utility\Type.h"
-#include "../Include/Game/Entity/Player/Player.h"
 #include <SFML\Graphics\RenderWindow.hpp>
+#include "Game/GUI/DesktopManager.h"
+#include "Game\GUI\Desktop.h"
+#include "Game\GUI\Container.h"
+#include "Game\GUI\Component.h"
+#include "Game\GUI\Label.h"
 
 namespace Grim
 {
@@ -22,15 +26,11 @@ namespace Grim
 		bool tryInitializeWindow();
 		bool tryRunGameLoop();
 
-		void integrate(float32 stateCurrent, float32 dt);
 		void render(float32 stateRender);
 	private:
 		sf::RenderWindow m_RenderWindow;
-		bool m_Running;
+		bool m_bRunning;
 		int32 m_ExitCode;
-
-		//Testing
-		Player* m_Player;
 
 		// Fixed time step
 		float32 m_t;

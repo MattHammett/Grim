@@ -1,5 +1,5 @@
-#include "../../Include/Input/Keyboard.h"
-#include "../../Include/Utility/Type.h"
+#include "Keyboard.h"
+#include "../Utility/Type.h"
 #include <assert.h>
 using namespace Grim;
 

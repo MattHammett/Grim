@@ -1,5 +1,5 @@
-#include "../../../Include/Utility/Time/Clock.h"
-#include "../../../Include/Utility/Singletons.h"
+#include "Clock.h"
+#include "../../Utility/Singletons.h"
 using namespace Grim;
 
 void Clock::initialize()

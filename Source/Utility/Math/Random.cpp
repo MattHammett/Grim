@@ -1,5 +1,5 @@
-#include "../../../Include/Utility/Math/Random.h"
-#include "../../../Include/Setup.h"
+#include "Random.h"
+#include "../../Setup.h"
 using namespace Grim;
 
 std::mt19937 Random::m_Engine;

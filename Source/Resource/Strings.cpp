@@ -1,7 +1,7 @@
-#include "../../Include/Resource/Strings.h"
-#include "../../Include/Utility/File.h"
-#include "../../Include/Debug/Error.h"
-#include "../../Include/Utility/Singletons.h"
+#include "Strings.h"
+#include "../Utility/File.h"
+#include "../Debug/Error.h"
+#include "../Utility/Singletons.h"
 #include <sstream>
 #include <iostream>
 using namespace Grim;
@@ -16,6 +16,7 @@ void Strings::initialize()
 
 void Strings::terminate()
 {
+	m_Strings.clear();
 }
 
 const std::string& Strings::find(const std::string & name)

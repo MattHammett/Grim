@@ -1,4 +1,4 @@
-#include "../../Include/Input/Mouse.h"
+#include "Mouse.h"
 #include <assert.h>
 using namespace Grim;
 

@@ -9,8 +9,8 @@ namespace Grim
 	class File
 	{
 	public:
-		static bool checkFileEmpty(std::fstream& file);
-		static bool checkFileExists(const std::string& file);
+		static bool isFileEmpty(std::fstream& file);
+		static bool doesFileExist(const std::string& file);
 	};
 }
 

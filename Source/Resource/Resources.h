@@ -4,6 +4,7 @@
 #include "../Utility/Singleton.h"
 #include "Textures.h"
 #include "Strings.h"
+#include "Fonts.h"
 
 namespace Grim
 {
@@ -18,7 +19,7 @@ namespace Grim
 
 		const sf::Texture& findTexture(const std::string& texture);
 		const std::string& findString(const std::string& string);
-		//const sf::Font& findFont(const std::string& font);
+		const sf::Font& findFont(const std::string& font);
 	};
 }
 
